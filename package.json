@@ -1,28 +1,26 @@
 {
   "name": "mesto_backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "mesto express backend",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx eslint",
+    "lint": "npx eslint .",
     "start": "PORT=3000 node app.js",
     "dev": "nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Anastacia",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
-    "image-url-validator": "^1.0.4",
     "nodemon": "^2.0.9"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "is-an-image-url": "^1.0.4",
     "mongoose": "^5.13.0"
   }
 }

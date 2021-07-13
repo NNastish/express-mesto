@@ -4,7 +4,7 @@ module.exports.errorController = (error, response, filename) => {
   let ERROR_CODE = 500;
   let ERROR_MESSAGE = 'Ошибка по умолчанию. Кто-то применяет магию вне Хогвардса.';
   let RESOURCE = resourceNames[extractFileName(filename)];
-  if (error.name === 'CastError') {
+  if (error.message === 'NotFound') {
     ERROR_CODE = 404;
     ERROR_MESSAGE = `Запрашиваемый ресурс (${RESOURCE}) не найден.`
   }

@@ -8,7 +8,7 @@ module.exports.getUsers = (req, res) => {
 }
 
 module.exports.getUserById = (req, res) => {
-  User.findById(req.params.id)
+  User.findById(req.params.id).orFail(new Error('NotFound'))
     .then(user => res.status(200).send({
       name: user.name,
       about: user.about,
@@ -37,8 +37,8 @@ module.exports.updateUser = (req, res) => {
   User.findByIdAndUpdate(req.user._id, req.body, {
     new: true, // обработчик then получит на вход обновлённую запись
     runValidators: true, // данные будут валидированы перед изменением
-    upsert: true // если пользователь не найден, он будет создан
-  })
+    upsert: false // если пользователь не найден, он будет создан
+  }).orFail(new Error('NotFound'))
     .then(user => res.send({
       name: user.name,
       about: user.about,
@@ -52,8 +52,8 @@ module.exports.updateUserAvatar = (req, res) => {
   User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, {
     new: true,
     runValidators: true,
-    upsert: true
-  })
+    upsert: false
+  }).orFail(new Error('NotFound'))
     .then(user => res.send({avatar: user.avatar}))
     .catch(error => errorController(error, res, __filename))
 }

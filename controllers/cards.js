@@ -23,7 +23,7 @@ module.exports.createCard = (req, res) => {
 }
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findByIdAndRemove(req.params.cardId).orFail(new Error('NotFound'))
     .then(card => res.send(card))
     .catch(error => errorController(error, res, __filename))
 }
@@ -33,7 +33,7 @@ module.exports.putLike = (req, res) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
-  )
+  ).orFail(new Error('NotFound'))
     .then(card => res.send(card))
     .catch(error => errorController(error, res, __filename))
 }
@@ -43,7 +43,7 @@ module.exports.deleteLike = (req, res) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
-  )
+  ).orFail(new Error('NotFound'))
     .then(card => res.send(card))
     .catch(error => errorController(error, res, __filename))
 }
