@@ -17,6 +17,5 @@ module.exports.errorController = (error, response, filename) => {
     ERROR_CODE = 400;
     ERROR_MESSAGE = 'Поданы некорректные данные, либо данные не в полном объеме.';
   }
-  // eslint-disable-next-line max-len
-  response.status(ERROR_CODE).send({ message: ERROR_MESSAGE, errorMessage: error.message, errorName: error.name });
+  response.status(ERROR_CODE).send({ message: ERROR_MESSAGE });
 };
