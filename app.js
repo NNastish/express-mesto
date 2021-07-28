@@ -10,16 +10,13 @@ const NotFoundError = require('./errors/notFoundError');
 
 const app = express();
 const { PORT = 3000 } = process.env;
+const { mongoUrl, mongoOptions, resourceNotFound } = require('./constants');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // connection to db
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+mongoose.connect(mongoUrl, mongoOptions);
 
 app.post('/signup', createUser);
 app.post('/signin', login);
@@ -31,7 +28,7 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use('*', (req, res, next) => {
-  next(new NotFoundError('404. Resource is not Found.'));
+  next(new NotFoundError(resourceNotFound));
 });
 
 app.use(handleErrors);
