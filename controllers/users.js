@@ -12,14 +12,17 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.getMyInfo = (req, res, next) => {
-  // User.findById(req.user._id).orFail(new NotFoundError(userNotFound))
-  User.findById(req.user._id).orFail(new NotFoundError(req.user._id))
-    .then((user) => res.status(200).send({
-      name: user.name,
-      about: user.about,
-      avatar: user.avatar,
-      _id: user._id,
-    }))
+  const { _id: id } = req.user;
+  User.findById(id).orFail(new NotFoundError(userNotFound))
+    .then((user) => {
+      console.log(user);
+      res.status(200).send({
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        _id: user._id,
+      });
+    })
     .catch(next);
 };
 
@@ -77,11 +80,6 @@ exports.login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : jwtDevelopment,
         { expiresIn: '7d' },
       );
-      // res.cookie('jwt', token, {
-      //   maxAge: 3600000 * 24 * 7,
-      //   httpOnly: true,
-      // })
-      //   .end();
       res.send({ token });
     })
     .catch(next);

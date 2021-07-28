@@ -26,10 +26,11 @@ module.exports.createCard = (req, res, next) => {
 
 // TODO: check if user has rights.
 module.exports.deleteCard = (req, res, next) => {
-  Card.findById(req.params.cardId).orFail(new NotFoundError(cardNotFound))
+  const { cardId } = req.params;
+  Card.findById(cardId).orFail(new NotFoundError(cardNotFound))
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Card.remove(card)
+        Card.findByIdAndRemove(cardId)
           .then((deleted) => res.send(deleted))
           .catch(next);
       } else {

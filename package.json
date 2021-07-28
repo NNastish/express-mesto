@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "start": "PORT=3000 node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "debug": "nodemon --inspect app.js"
   },
   "keywords": [],
   "author": "Anastacia",
@@ -21,6 +22,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "celebrate": "^15.0.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
