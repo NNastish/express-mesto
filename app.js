@@ -10,6 +10,7 @@ const { handleErrors } = require('./middlewares/errorHandler');
 const NotFoundError = require('./errors/notFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { mongoUrl, mongoOptions, resourceNotFound } = require('./constants');
+const { checkCors } = require('./middlewares/cors');
 
 const app = express();
 // const { PORT = 3000 } = process.env;
@@ -22,6 +23,8 @@ mongoose.connect(mongoUrl, mongoOptions);
 
 // подключаем логгер
 app.use(requestLogger);
+
+app.use(checkCors);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
