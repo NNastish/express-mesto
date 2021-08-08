@@ -8,16 +8,20 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const { handleErrors } = require('./middlewares/errorHandler');
 const NotFoundError = require('./errors/notFoundError');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { mongoUrl, mongoOptions, resourceNotFound } = require('./constants');
 
 const app = express();
-const { PORT = 3000 } = process.env;
-const { mongoUrl, mongoOptions, resourceNotFound } = require('./constants');
+// const { PORT = 3000 } = process.env;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // connection to db
 mongoose.connect(mongoUrl, mongoOptions);
+
+// подключаем логгер
+app.use(requestLogger);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -42,12 +46,15 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
+app.use(errorLogger);
+
 app.use('*', (req, res, next) => {
   next(new NotFoundError(resourceNotFound));
 });
 
 app.use(handleErrors);
 
-app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
-});
+module.exports = app;
+// app.listen(PORT, () => {
+//   console.log(`listening on port ${PORT}`);
+// });
