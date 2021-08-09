@@ -16,6 +16,7 @@ const accessDenied = 'Ошибка доступа.';
 const signinError = 'Неправильная почта или пароль';
 const authError = 'Необходима авторизация';
 const resourceNotFound = '404. Resource is not Found.';
+const emailAlreadyTaken = 'Переданный email уже используется другим пользователем.';
 const jwtDevelopment = 'some-secret-key';
 
 module.exports = {
@@ -31,4 +32,5 @@ module.exports = {
   signinError,
   authError,
   resourceNotFound,
+  emailAlreadyTaken,
 };

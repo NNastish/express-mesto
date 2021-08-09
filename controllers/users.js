@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/notFoundError');
-const { userNotFound, jwtDevelopment } = require('../constants');
+const EmailCreationError = require('../errors/emailCreationError');
+const { userNotFound, jwtDevelopment, emailAlreadyTaken } = require('../constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -44,7 +45,13 @@ exports.createUser = (req, res, next) => User.createWithHash(req)
     about: user.about,
     avatar: user.avatar,
   }))
-  .catch(next);
+  .catch((error) => {
+    let mistake = error;
+    if (error.code === 11000 && error.name === 'MongoError') {
+      mistake = new EmailCreationError(emailAlreadyTaken);
+    }
+    next(mistake);
+  });
 
 exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, {
