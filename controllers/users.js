@@ -16,7 +16,6 @@ exports.getMyInfo = (req, res, next) => {
   const { _id: id } = req.user;
   User.findById(id).orFail(new NotFoundError(userNotFound))
     .then((user) => {
-      console.log(user);
       res.status(200).send({
         name: user.name,
         about: user.about,
