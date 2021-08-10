@@ -20,6 +20,7 @@ exports.getMyInfo = (req, res, next) => {
         name: user.name,
         about: user.about,
         avatar: user.avatar,
+        email: user.email,
         _id: user._id,
       });
     })
