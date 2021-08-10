@@ -73,7 +73,12 @@ exports.updateUserAvatar = (req, res, next) => {
     runValidators: true,
     upsert: false,
   }).orFail(new NotFoundError(userNotFound))
-    .then((user) => res.send({ avatar: user.avatar }))
+    .then((user) => res.send({
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      _id: user._id,
+    }))
     .catch(next);
 };
 
