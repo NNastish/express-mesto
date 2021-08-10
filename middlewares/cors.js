@@ -1,7 +1,7 @@
 const ALLOWED_CORS = process.env.ALLOWED_CORS ? process.env.ALLOWED_CORS.split(',') : [
   'http://nastish.nomoredomains.monster',
   'https://nastish.nomoredomains.monster',
-  'localhost:3000',
+  'http://localhost:3000',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
