@@ -92,7 +92,7 @@ exports.login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : jwtDevelopment,
         { expiresIn: '7d' },
       );
-      res.send({ token: jwtToken });
+      res.send({ userInfo: user, token: jwtToken });
     })
     .catch(next);
 };
