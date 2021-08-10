@@ -26,7 +26,7 @@ module.exports.createCard = async (req, res, next) => {
 // TODO: check if user has rights.
 module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-  Card.findById(cardId).orFail(new NotFoundError(cardNotFound))
+  Card.findById(cardId).populate('owner').orFail(new NotFoundError(cardNotFound))
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
         Card.findByIdAndRemove(cardId)
@@ -44,7 +44,7 @@ module.exports.putLike = (req, res, next) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
-  ).orFail(new NotFoundError(cardNotFound))
+  ).populate('owner').orFail(new NotFoundError(cardNotFound))
     .then((card) => res.send(card))
     .catch(next);
 };
@@ -54,7 +54,7 @@ module.exports.deleteLike = (req, res, next) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
-  ).orFail(new NotFoundError(cardNotFound))
+  ).populate('owner').orFail(new NotFoundError(cardNotFound))
     .then((card) => res.send(card))
     .catch(next);
 };
