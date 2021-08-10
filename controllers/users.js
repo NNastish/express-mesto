@@ -86,12 +86,12 @@ exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign(
+      const jwtToken = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : jwtDevelopment,
         { expiresIn: '7d' },
       );
-      res.send({ token });
+      res.send({ token: jwtToken });
     })
     .catch(next);
 };
