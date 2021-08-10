@@ -44,7 +44,7 @@ module.exports.putLike = (req, res, next) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
-  ).populate('owner').orFail(new NotFoundError(cardNotFound))
+  ).orFail(new NotFoundError(cardNotFound))
     .then((card) => res.send(card))
     .catch(next);
 };
@@ -54,7 +54,7 @@ module.exports.deleteLike = (req, res, next) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
-  ).populate('owner').orFail(new NotFoundError(cardNotFound))
+  ).orFail(new NotFoundError(cardNotFound))
     .then((card) => res.send(card))
     .catch(next);
 };
