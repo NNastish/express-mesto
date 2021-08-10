@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const User = require('../models/user');
 const NotFoundError = require('../errors/notFoundError');
 const BadRequestError = require('../errors/badRequestError');
 const AccessError = require('../errors/accessError');
@@ -11,17 +12,28 @@ module.exports.getCards = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.createCard = (req, res, next) => {
-  const { name, link } = req.body;
-  Card.create({ name, link, owner: req.user._id })
-    .then((card) => {
-      if (!card) {
-        throw new BadRequestError(invalidData);
-      }
-      // eslint-disable-next-line no-shadow
-      res.send(card);
-    })
-    .catch(next);
+// module.exports.createCard = (req, res, next) => {
+//   const { name, link } = req.body;
+//   Card.create({ name, link, owner: req.user._id })
+//     .then((card) => {
+//       if (!card) {
+//         throw new BadRequestError(invalidData);
+//       }
+//       // eslint-disable-next-line no-shadow
+//       res.send(card);
+//     })
+//     .catch(next);
+// };
+
+module.exports.createCard = async (req, res, next) => {
+  try {
+    const { name, link } = req.body;
+    const owner = await User.findById(req.user._id);
+    const card = await Card.create({ name, link, owner });
+    res.send(card);
+  } catch (e) {
+    next(new BadRequestError(invalidData));
+  }
 };
 
 // TODO: check if user has rights.
