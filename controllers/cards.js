@@ -12,19 +12,6 @@ module.exports.getCards = (req, res, next) => {
     .catch(next);
 };
 
-// module.exports.createCard = (req, res, next) => {
-//   const { name, link } = req.body;
-//   Card.create({ name, link, owner: req.user._id })
-//     .then((card) => {
-//       if (!card) {
-//         throw new BadRequestError(invalidData);
-//       }
-//       // eslint-disable-next-line no-shadow
-//       res.send(card);
-//     })
-//     .catch(next);
-// };
-
 module.exports.createCard = async (req, res, next) => {
   try {
     const { name, link } = req.body;
